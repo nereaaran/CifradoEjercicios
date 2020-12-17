@@ -24,10 +24,10 @@ public class CifradoEjercicios {
 
             switch (opc) {
                 case 1:
-
+                    AlgoritmoDeResumen.cifrarSHA1();
                     break;
                 case 2:
-
+                    AlgoritmoDeResumen.cifrarSHA256();
                     break;
                 case 3:
 
@@ -40,8 +40,8 @@ public class CifradoEjercicios {
     private static int menu() {
         int resp = 0;
 
-        System.out.println("1. Algoritmo de resumen."
-                + "\n2. ."
+        System.out.println("\n1. Algoritmo de resumen: SHA-1."
+                + "\n2. Algoritmo de resumen: SHA-256."
                 + "\n3. ."
                 + "\n4. Salir.");
         System.out.println("\nElige tu opción: ");
