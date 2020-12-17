@@ -40,7 +40,7 @@ public class CifradoEjercicios {
     private static int menu() {
         int resp = 0;
 
-        System.out.println("1. ."
+        System.out.println("1. Algoritmo de resumen."
                 + "\n2. ."
                 + "\n3. ."
                 + "\n4. Salir.");
