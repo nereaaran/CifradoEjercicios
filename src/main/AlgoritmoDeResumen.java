@@ -7,6 +7,11 @@ package main;
 
 import java.math.BigInteger;
 import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.security.NoSuchProviderException;
+import java.security.SecureRandom;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -14,77 +19,111 @@ import java.security.MessageDigest;
  */
 public class AlgoritmoDeResumen {
 
-    
-    //https://www.geeksforgeeks.org/sha-1-hash-in-java/
-    public static void cifrarSHA1() {
-        //Texto que se va a "digerir"
-        String mensajeOriginal = "Esto es un texto plano";
-
+    /**
+     * Método que genera hashes más fuertes que MD5, aunque no son siempre
+     * únicos,ya que hay posibilidad de colision (que dos entradas distintas den
+     * un mismo hash como resultado) aunque es menor que con MD5. Para
+     * implementar los distintos SHA basta con poner
+     * SHA-1/SHA-256/SHA-384/SHA-512 en getInstance(). A mayor numero mayor
+     * generacion de byte en el hash y mayor seguridad.
+     *
+     * @param mensaje
+     * @param salt
+     * @return
+     */
+    public static String cifrarSHA(String mensaje, byte[] salt) {
+        String mensajeGenerado = null;
         try {
-            //Se instancia
             MessageDigest md = MessageDigest.getInstance("SHA-1");
-            //Se llama al metodo digest() para calcular el message digest de
-            //"mensaje original" y lo devuelve como un array de bytes.
-            byte[] messageDigest = md.digest(mensajeOriginal.getBytes());
-            //Convierte el array de bytes en una reprentacion signum
-            BigInteger no = new BigInteger(1, messageDigest);
-            //Convierte el message digest en un valor hex
-            String hashtext = no.toString(16);
-            // Add preceding 0s to make it 32 bit
-            while (hashtext.length() < 32) {
-                hashtext = "0" + hashtext;
+            md.update(salt);
+            byte[] bytes = md.digest(mensaje.getBytes());
+            StringBuilder sb = new StringBuilder();
+            for (int i = 0; i < bytes.length; i++) {
+                sb.append(Integer.toString((bytes[i] & 0xff) + 0x100, 16).substring(1));
             }
-
-            System.out.println("Mensaje resumen: " + hashtext);
-        } catch (Exception e) {
+            mensajeGenerado = sb.toString();
+        } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();
         }
+        return mensajeGenerado;
     }
 
-    /*https://unipython.com/encriptar-en-md5-y-sha1-con-java/
-    Este es otro modo de hacerlo y el resultado es exactamente el mismo
-    public static void cifrarSHA1() {
-        //Texto que se va a "digerir"
-        String mensajeOriginal = "Esto es un texto plano";
-
+    /**
+     * El algoritmo MD5 es rapido y facil de implementar pero no es muy seguro.
+     * "Is not collision resistant", es decir, diferentes mensajes pueden
+     * resultar en un mismo hash.
+     *
+     * @param mensaje
+     * @return
+     */
+    //https://howtodoinjava.com/java/java-security/how-to-generate-secure-password-hash-md5-sha-pbkdf2-bcrypt-examples/
+    public static String cifrarMD5(String mensaje) {
+        String mensajeGenerado = null;
         try {
-            MessageDigest md = MessageDigest.getInstance("SHA-1");
-            byte[] array = md.digest(mensajeOriginal.getBytes());
-            StringBuffer sb = new StringBuffer();
-            for (int i = 0; i < array.length; ++i) {
-                sb.append(Integer.toHexString((array[i] & 0xFF) | 0x100)
-                        .substring(1, 3));
+            // Create MessageDigest instance for MD5
+            MessageDigest md = MessageDigest.getInstance("MD5");
+            //Add message bytes to digest
+            md.update(mensaje.getBytes());
+            //Get the hash's bytes 
+            byte[] bytes = md.digest();
+            //This bytes[] has bytes in decimal format;
+            //Convert it to hexadecimal format
+            StringBuilder sb = new StringBuilder();
+            for (int i = 0; i < bytes.length; i++) {
+                sb.append(Integer.toString((bytes[i] & 0xff) + 0x100, 16).substring(1));
             }
-            System.out.println("Mensaje resumen: " + sb.toString());
-        } catch (java.security.NoSuchAlgorithmException e) {
-            System.out.println(e.getMessage());
-        }
-    
-    } */
-    
-    //https://www.baeldung.com/sha-256-hashing-java
-    public static void cifrarSHA256() {
-        //Texto que se va a "digerir"
-        String mensajeOriginal = "Esto es un texto plano";
-
-        try {
-            //Se instancia
-            MessageDigest md = MessageDigest.getInstance("SHA-1");
-            //Se llama al metodo digest() para calcular el message digest de
-            //"mensaje original" y lo devuelve como un array de bytes.
-            byte[] messageDigest = md.digest(mensajeOriginal.getBytes());
-            //Convierte el array de bytes en una reprentacion signum
-            BigInteger no = new BigInteger(1, messageDigest);
-            //Convierte el message digest en un valor hex
-            String hashtext = no.toString(16);
-            // Add preceding 0s to make it 32 bit
-            while (hashtext.length() < 32) {
-                hashtext = "0" + hashtext;
-            }
-
-            System.out.println("Mensaje resumen: " + hashtext);
-        } catch (Exception e) {
+            //Get complete hashed message in hex format
+            mensajeGenerado = sb.toString();
+        } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();
         }
+        return mensajeGenerado;
+    }
+
+    /**
+     * Es el mismo ejemplo que "cifrarMD5" pero incluye salt para mayor
+     * seguridad. Habria que guardar el valor de salt por cada mensaje que se
+     * cifre, porque su valor va cambiando
+     */
+    public static String cifrarMD5ConSalt(String mensaje, byte[] salt) {
+        String mensajeGenerado = null;
+        try {
+            // Create MessageDigest instance for MD5
+            MessageDigest md = MessageDigest.getInstance("MD5");
+            //Add message bytes to digest
+            md.update(salt);
+            //Get the hash's bytes 
+            byte[] bytes = md.digest(mensaje.getBytes());
+            //This bytes[] has bytes in decimal format;
+            //Convert it to hexadecimal format            
+            StringBuilder sb = new StringBuilder();
+            for (int i = 0; i < bytes.length; i++) {
+                sb.append(Integer.toString((bytes[i] & 0xff) + 0x100, 16).substring(1));
+            }
+            //Get complete hashed password in hex format
+            mensajeGenerado = sb.toString();
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        }
+        return mensajeGenerado;
+    }
+
+    /**
+     * Salt es un texto generado aleatoriamente que es adjuntado al mensaje
+     * antes de obtener el hash para mayor seguridad.
+     *
+     * @return Texto generado aleatoriamente.
+     * @throws NoSuchAlgorithmException
+     */
+    public static byte[] getSalt() throws NoSuchAlgorithmException {
+        //Always use a SecureRandom generator
+        //SHA1PRNG es un algoritmo generador de numeros pseudoaleatorio basado en el message digest de SHA-1
+        SecureRandom sr = SecureRandom.getInstance("SHA1PRNG");
+        //Create array for salt
+        byte[] salt = new byte[16];
+        //Get a random salt
+        sr.nextBytes(salt);
+        //return salt
+        return salt;
     }
 }
