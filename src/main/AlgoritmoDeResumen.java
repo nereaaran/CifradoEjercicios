@@ -27,25 +27,51 @@ public class AlgoritmoDeResumen {
      * SHA-1/SHA-256/SHA-384/SHA-512 en getInstance(). A mayor numero mayor
      * generacion de byte en el hash y mayor seguridad.
      *
-     * @param mensaje
-     * @param salt
-     * @return
+     * <b>Función de una sola vía (o función hash)</b> <br/>
+     * <br/>
+     *
+     * Dado que es <u>imposible</u> obtener el texto original a partir de un
+     * hash, SHA es útil para guardar passwords en BBDD. Guardamos el hash, no
+     * el password, de forma que cada vez que tengamos que autenticar a un
+     * usuario primero calculamos el hash del password que nos llega con el hash
+     * de BBDD. Si coinciden, genial. Si no, es que la clave es incorrecta.
      */
-    public static String cifrarSHA(String mensaje, byte[] salt) {
-        String mensajeGenerado = null;
+    public static void cifrarSHA(String mensaje) {
+        MessageDigest md;
         try {
-            MessageDigest md = MessageDigest.getInstance("SHA-1");
-            md.update(salt);
-            byte[] bytes = md.digest(mensaje.getBytes());
-            StringBuilder sb = new StringBuilder();
-            for (int i = 0; i < bytes.length; i++) {
-                sb.append(Integer.toString((bytes[i] & 0xff) + 0x100, 16).substring(1));
-            }
-            mensajeGenerado = sb.toString();
+            // Obtén una instancia de MessageDigest que usa SHA
+            md = MessageDigest.getInstance("SHA");
+            // Convierte el texto en un array de bytes 
+            byte dataBytes[] = mensaje.getBytes();
+            // Actualiza el MessageDigest con el array de bytes
+            md.update(dataBytes);
+            // Calcula el resumen (función digest)
+            byte resumen[] = md.digest();
+
+            System.out.println("Mensaje original: " + mensaje);
+            System.out.println("Número de Bytes: " + md.getDigestLength());
+            System.out.println("Algoritmo usado: " + md.getAlgorithm());
+            System.out.println("Resumen del Mensaje: " + new String(resumen));
+            System.out.println("Mensaje en Hexadecimal: " + Hexadecimal(resumen));
+            System.out.println("Proveedor: " + md.getProvider().toString());
+
         } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();
         }
-        return mensajeGenerado;
+
+    }
+
+    // Convierte Array de Bytes en hexadecimal
+    static String Hexadecimal(byte[] resumen) {
+        String HEX = "";
+        for (int i = 0; i < resumen.length; i++) {
+            String h = Integer.toHexString(resumen[i] & 0xFF);
+            if (h.length() == 1) {
+                HEX += "0";
+            }
+            HEX += h;
+        }
+        return HEX.toUpperCase();
     }
 
     /**

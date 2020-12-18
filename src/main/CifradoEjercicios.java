@@ -29,8 +29,7 @@ public class CifradoEjercicios {
             opc = menu();
             switch (opc) {
                 case 1:
-                    AlgoritmoDeResumen.cifrarSHA(mensajeOriginal, salt);
-                    System.out.println("Mensaje resumen SHA: " + mensajeDigerido);
+                    AlgoritmoDeResumen.cifrarSHA(mensajeOriginal);
                     break;
                 case 2:
                     mensajeDigerido = AlgoritmoDeResumen.cifrarMD5(mensajeOriginal);
