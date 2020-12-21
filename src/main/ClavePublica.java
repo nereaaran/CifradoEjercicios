@@ -17,37 +17,27 @@ import java.security.spec.X509EncodedKeySpec;
 import javax.crypto.Cipher;
 
 /**
- * <b>Criptograf�a Asim�trica (Clave p�blica) - Generador Clave P�blica</b>
- * <br/>
- * <br/>
+ * Criptografia Asimitrica (Clave publica) - Generador Clave Publica
  *
- * En un <b>Cifrado asim�trico</b> hay dos participantes: el emisor y el
- * receptor. Los pasos a seguir son:
+ * En un Cifrado asimitrico hay dos participantes: el emisor y el receptor. Los
+ * pasos a seguir son:
  *
- * <ul>
- * <li>Generar una <b>clave p�blica</b> y otra <b>privada</b>. La clave p�blica
- * se env�a al emisor</li>
- * <li>El emisor <u>cifra</u> los datos con <b>clave p�blica</b> y se env�an al
- * receptor</li>
- * <li>El receptor <u>descifra</u> los datos con <b>clave privada</b></li>
- * </ul>
+ * 1 Generar una clave publica y otra privada. La clave publica se envia al
+ * emisor. 2 El emisor cifra los datos con clave publica y se envian al
+ * receptor. 3 El receptor descifra los datos con clave privada
  *
- * Esta clase genera primero cifra un mensaje con la <b>clave p�blica</b>. A
- * continuaci�n, lo descifra mediante la <b>clave privada</b>. En este caso
- * vamos a utilizar:
+ * Esta clase genera primero cifra un mensaje con la clave publica. A
+ * continuacion, lo descifra mediante la clave privada. En este caso vamos a
+ * utilizar:
  *
- * <ul>
- * <li>El algoritmo RSA</li>
- * <li>El modo ECB: Existen dos, el ECB que es sencillo, y el CBC que necesita
- * un vector de inicializaci�n(IV)</li>
- * <li>El padding PKCS1Padding: Si el mensaje no es m�ltiplo de la longitud del
- * algoritmo se indica un relleno.</li>
- * </ul>
+ * -El algoritmo RSA -El modo ECB: Existen dos, el ECB que es sencillo, y el CBC
+ * que necesita un vector de inicializaci�n(IV) -El padding PKCS1Padding: Si el
+ * mensaje no es m�ltiplo de la longitud del algoritmo se indica un relleno.
  */
 public class ClavePublica {
 
     /**
-     * Cifra un texto con RSA, modo ECB y padding PKCS1Padding (asim�trica) y lo
+     * Cifra un texto con RSA, modo ECB y padding PKCS1Padding (asimetrica) y lo
      * retorna
      *
      * @param mensaje El mensaje a cifrar
@@ -57,8 +47,8 @@ public class ClavePublica {
         byte[] encodedMessage = null;
         try {
             // Cargamos la clave pública
-            byte fileKey[] = fileReader("c:\\trastero\\EjemploRSA_Public.key");
-            System.out.println("Tama�o -> " + fileKey.length + " bytes");
+            byte fileKey[] = fileReader("D:\\DAM\\PSP\\CifradoEjercicios\\src\\archivos\\EjemploRSA_Public.key");
+            System.out.println("Tamaño -> " + fileKey.length + " bytes");
 
             // Obtenemos una instancia de KeyFactory, algoritmo RSA
             KeyFactory keyFactory = KeyFactory.getInstance("RSA");
@@ -81,18 +71,18 @@ public class ClavePublica {
     }
 
     /**
-     * Descifra un texto con RSA, modo ECB y padding PKCS1Padding (asim�trica) y
+     * Descifra un texto con RSA, modo ECB y padding PKCS1Padding (asimetrica) y
      * lo retorna
      *
      * @param mensaje El mensaje a descifrar
      * @return El mensaje descifrado
      */
-    private byte[] descifrarTexto(byte[] mensaje) {
+    public byte[] descifrarRSA(byte[] mensaje) {
         byte[] decodedMessage = null;
         try {
             // Cargamos la clave privada
-            byte fileKey[] = fileReader("c:\\trastero\\EjemploRSA_Private.key");
-            System.out.println("Tama�o -> " + fileKey.length + " bytes");
+            byte fileKey[] = fileReader("D:\\DAM\\PSP\\CifradoEjercicios\\src\\archivos\\EjemploRSA_Private.key");
+            System.out.println("Tamaño -> " + fileKey.length + " bytes");
 
             // Obtenemos una instancia de KeyFactory, algoritmo RSA
             KeyFactory keyFactory = KeyFactory.getInstance("RSA");
@@ -104,6 +94,7 @@ public class ClavePublica {
             Cipher cipher = Cipher.getInstance("RSA/ECB/PKCS1Padding");
             // Iniciamos el cipher (DECRYPT_MODE)
             cipher.init(Cipher.DECRYPT_MODE, privateKey);
+            
             // El método doFinal nos descifra el mensaje
             decodedMessage = cipher.doFinal(mensaje);
         } catch (Exception e) {
@@ -129,14 +120,4 @@ public class ClavePublica {
         return ret;
     }
 
-    public static void main(String[] args) {
-        EjemploRSA ejemploRSA = new EjemploRSA();
-        byte[] mensajeCifrado = ejemploRSA.cifrarTexto("Mensaje super secreto");
-        System.out.println("Cifrado! -> " + new String(mensajeCifrado));
-        System.out.println("Tama�o -> " + mensajeCifrado.length + " bytes");
-        System.out.println("-----------");
-        byte[] mensajeDescifrado = ejemploRSA.descifrarTexto(mensajeCifrado);
-        System.out.println("Descifrado! -> " + new String(mensajeDescifrado));
-        System.out.println("-----------");
-    }
 }

@@ -10,8 +10,9 @@ import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 
 /**
+ * Clase principal que ejecuta los metodos de las clases de cifrado.
  *
- * @author 2dam
+ * @author Nerea
  */
 public class Main {
 
@@ -23,6 +24,8 @@ public class Main {
         String mensajeDigerido = null;
         String mensajeCifrado = null;
         String mensajeDescifrado = null;
+        byte[] mensajeCifradoBytes = null;
+        byte[] mensajeDescifradoBytes = null;
         byte[] salt = getSalt();
 
         int opc = 0;
@@ -42,13 +45,30 @@ public class Main {
                     break;
                 case 4:
                     ClavePrivada clavePrivada = new ClavePrivada();
-                    mensajeCifrado = clavePrivada.cifrarAES("Clave", "Mensajesuper secreto");
+                    mensajeCifrado = clavePrivada.cifrarAES("Clave", "Mensaje super secreto");
                     System.out.println("Cifrado: " + mensajeCifrado);
+                    System.out.println("-----------");
                     mensajeDescifrado = clavePrivada.descifrarAES("Clave");
                     System.out.println("Descifrado: " + mensajeDescifrado);
+                    System.out.println("-----------");
+                    break;
+
+                case 5:
+                    KeyGenerator clavePrivada_KeyGenerator = new KeyGenerator();
+                    clavePrivada_KeyGenerator.generatePrivateKey();
+                    System.out.println("Ficheros de Clave Generados!");
+
+                    ClavePublica clavePublica = new ClavePublica();
+                    mensajeCifradoBytes = clavePublica.cifrarRSA("Mensaje super secreto");
+                    System.out.println("Cifrado! -> " + new String(mensajeCifradoBytes));
+                    System.out.println("Tama�o -> " + mensajeCifradoBytes.length + " bytes");
+                    System.out.println("-----------");
+                    mensajeDescifradoBytes = clavePublica.descifrarRSA(mensajeCifradoBytes);
+                    System.out.println("Descifrado! -> " + new String(mensajeDescifradoBytes));
+                    System.out.println("-----------");
                     break;
             }
-        } while (opc != 15);
+        } while (opc != 6);
     }
 
     private static int menu() {
@@ -58,6 +78,8 @@ public class Main {
                 + "\n2. Algoritmo resumen: MD5."
                 + "\n3. Algoritmo resumen: MD5 con salt."
                 + "\n4. Clave privada: AES."
+                + "\n5. Clave publica: RSA."
+                + "\n6. Salir."
                 + "\nElige tu opción: ");
         resp = Utilidades.leerInt();
         return resp;

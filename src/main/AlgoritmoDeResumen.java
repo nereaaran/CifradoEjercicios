@@ -5,41 +5,38 @@
  */
 package main;
 
-import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.security.NoSuchProviderException;
-import java.security.SecureRandom;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
+ * Clase que contiene el hasheso usando el tipo SHA y MD5.
  *
- * @author 2dam
+ * @author Nerea
  */
 public class AlgoritmoDeResumen {
 
     /**
      * Método que genera hashes más fuertes que MD5, aunque no son siempre
-     * únicos,ya que hay posibilidad de colision (que dos entradas distintas den
-     * un mismo hash como resultado) aunque es menor que con MD5. Para
+     * únicos, ya que hay posibilidad de colision (que dos entradas distintas
+     * den un mismo hash como resultado) aunque es menor que con MD5. Para
      * implementar los distintos SHA basta con poner
      * SHA-1/SHA-256/SHA-384/SHA-512 en getInstance(). A mayor numero mayor
      * generacion de byte en el hash y mayor seguridad.
      *
-     * <b>Función de una sola vía (o función hash)</b> <br/>
-     * <br/>
+     * Función de una sola vía (o función hash)
      *
-     * Dado que es <u>imposible</u> obtener el texto original a partir de un
-     * hash, SHA es útil para guardar passwords en BBDD. Guardamos el hash, no
-     * el password, de forma que cada vez que tengamos que autenticar a un
-     * usuario primero calculamos el hash del password que nos llega con el hash
-     * de BBDD. Si coinciden, genial. Si no, es que la clave es incorrecta.
+     * Es imposible obtener el texto original a partir de un hash, SHA es útil
+     * para guardar passwords en BBDD. Guardamos el hash, no el password, de
+     * forma que cada vez que tengamos que autenticar a un usuario primero
+     * calculamos el hash del password que nos llega con el hash de BBDD. Si
+     * coinciden, genial. Si no, es que la clave es incorrecta.
+     *
+     * @param mensaje Mensaje original que le llega.
      */
     public static void cifrarSHA(String mensaje) {
         MessageDigest md;
         try {
-            // Obtén una instancia de MessageDigest que usa SHA
+            // Obtiene una instancia de MessageDigest que usa SHA
             md = MessageDigest.getInstance("SHA");
             // Convierte el texto en un array de bytes 
             byte dataBytes[] = mensaje.getBytes();
@@ -79,8 +76,8 @@ public class AlgoritmoDeResumen {
      * "Is not collision resistant", es decir, diferentes mensajes pueden
      * resultar en un mismo hash.
      *
-     * @param mensaje
-     * @return
+     * @param mensaje Mensaje original que le llega.
+     * @return El mensaje digerido.
      */
     //https://howtodoinjava.com/java/java-security/how-to-generate-secure-password-hash-md5-sha-pbkdf2-bcrypt-examples/
     public static String cifrarMD5(String mensaje) {
@@ -110,6 +107,10 @@ public class AlgoritmoDeResumen {
      * Es el mismo ejemplo que "cifrarMD5" pero incluye salt para mayor
      * seguridad. Habria que guardar el valor de salt por cada mensaje que se
      * cifre, porque su valor va cambiando
+     *
+     * @param mensaje Mensaje original que le llega.
+     * @param salt Valor salt que le llega.
+     * @return El mensaje digerido.
      */
     public static String cifrarMD5ConSalt(String mensaje, byte[] salt) {
         String mensajeGenerado = null;

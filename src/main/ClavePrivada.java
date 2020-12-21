@@ -86,8 +86,7 @@ public class ClavePrivada {
             // Guardamos el mensaje codificado: IV (16 bytes) + Mensaje
             byte[] combined = concatArrays(iv, encodedMessage);
             // Escribimos el fichero cifrado 
-            fileWriter("..\\ficheros\\EjemploAES.dat", combined);
-
+            fileWriter("D:\\DAM\\PSP\\CifradoEjercicios\\src\\archivos\\EjemploAES.dat", combined);
             // Retornamos el texto cifrado
             ret = new String(encodedMessage);
 
@@ -99,15 +98,16 @@ public class ClavePrivada {
 
     /**
      * Descifra un texto con AES, modo CBC y padding PKCS5Padding (simétrica) y
-     * lo retorna
+     * lo retorna.
      *
-     * @param clave La clave del usuario
+     * @param clave La clave del usuario.
+     * @return La clave descifrada.
      */
     public String descifrarAES(String clave) {
         String ret = null;
 
         // Fichero leído
-        byte[] fileContent = fileReader(""); // Path del fichero EjemploAES.dat
+        byte[] fileContent = fileReader("D:\\DAM\\PSP\\CifradoEjercicios\\src\\archivos\\EjemploAES.dat"); // Path del fichero EjemploAES.dat
         KeySpec keySpec = null;
         SecretKeyFactory secretKeyFactory = null;
         try {
