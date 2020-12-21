@@ -134,22 +134,4 @@ public class AlgoritmoDeResumen {
         return mensajeGenerado;
     }
 
-    /**
-     * Salt es un texto generado aleatoriamente que es adjuntado al mensaje
-     * antes de obtener el hash para mayor seguridad.
-     *
-     * @return Texto generado aleatoriamente.
-     * @throws NoSuchAlgorithmException
-     */
-    public static byte[] getSalt() throws NoSuchAlgorithmException {
-        //Always use a SecureRandom generator
-        //SHA1PRNG es un algoritmo generador de numeros pseudoaleatorio basado en el message digest de SHA-1
-        SecureRandom sr = SecureRandom.getInstance("SHA1PRNG");
-        //Create array for salt
-        byte[] salt = new byte[16];
-        //Get a random salt
-        sr.nextBytes(salt);
-        //return salt
-        return salt;
-    }
 }

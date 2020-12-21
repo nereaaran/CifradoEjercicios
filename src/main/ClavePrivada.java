@@ -62,11 +62,12 @@ public class ClavePrivada {
         SecretKeyFactory secretKeyFactory = null;
         try {
 
-            // Obtenemos el keySpec// Creamos un SecretKey usando la clave + salt
+            // Obtenemos el keySpec
+            // Creamos un SecretKey usando la clave + salt
             keySpec = new PBEKeySpec(clave.toCharArray(), salt, 65536, 128); // AES-128
-            secretKeyFactory = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA1");
 
             // Obtenemos una instancide de SecretKeyFactory con el algoritmo "PBKDF2WithHmacSHA1"
+            secretKeyFactory = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA1");
             // Generamos la clave
             byte[] key = secretKeyFactory.generateSecret(keySpec).getEncoded();
 
@@ -85,7 +86,7 @@ public class ClavePrivada {
             // Guardamos el mensaje codificado: IV (16 bytes) + Mensaje
             byte[] combined = concatArrays(iv, encodedMessage);
             // Escribimos el fichero cifrado 
-            fileWriter("c:\\trastero\\EjemploAES.dat", combined);
+            fileWriter("..\\ficheros\\EjemploAES.dat", combined);
 
             // Retornamos el texto cifrado
             ret = new String(encodedMessage);
@@ -102,7 +103,7 @@ public class ClavePrivada {
      *
      * @param clave La clave del usuario
      */
-    private String descifrarTexto(String clave) {
+    public String descifrarAES(String clave) {
         String ret = null;
 
         // Fichero leído
@@ -130,9 +131,8 @@ public class ClavePrivada {
             IvParameterSpec ivParam = new IvParameterSpec(Arrays.copyOfRange(fileContent, 0, 16));// La IV est� aqu�
 
             // Iniciamos el Cipher en ENCRYPT_MODE y le pasamos la clave privada y el ivParam
-
-            cipher.init(Cipher.DECRYPT_MODE, privateKey, ivParam);            
-// Le decimos que descifre
+            cipher.init(Cipher.DECRYPT_MODE, privateKey, ivParam);
+            // Le decimos que descifre
             byte[] decodedMessage = cipher.doFinal(Arrays.copyOfRange(fileContent, 16, fileContent.length));
 
             // Texto descifrado
@@ -189,12 +189,4 @@ public class ClavePrivada {
         return ret;
     }
 
-    public static void main(String[] args) {
-        EjemploAES ejemploAES = new EjemploAES();
-        String mensajeCifrado = ejemploAES.cifrarTexto("Clave", "Mensaje super secreto");
-        System.out.println("Cifrado! -> " + mensajeCifrado);
-        System.out.println("-----------");
-        System.out.println("Descifrado! -> " + ejemploAES.descifrarTexto("Clave"));
-        System.out.println("-----------");
-    }
 }
