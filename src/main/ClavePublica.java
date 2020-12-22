@@ -17,7 +17,7 @@ import java.security.spec.X509EncodedKeySpec;
 import javax.crypto.Cipher;
 
 /**
- * Criptografia Asimitrica (Clave publica) - Generador Clave Publica
+ * Criptografia Asimetrica (Clave publica) - Generador Clave Publica
  *
  * En un Cifrado asimitrico hay dos participantes: el emisor y el receptor. Los
  * pasos a seguir son:
@@ -31,7 +31,7 @@ import javax.crypto.Cipher;
  * utilizar:
  *
  * -El algoritmo RSA -El modo ECB: Existen dos, el ECB que es sencillo, y el CBC
- * que necesita un vector de inicializaci�n(IV) -El padding PKCS1Padding: Si el
+ * que necesita un vector de inicializacion(IV) -El padding PKCS1Padding: Si el
  * mensaje no es m�ltiplo de la longitud del algoritmo se indica un relleno.
  */
 public class ClavePublica {

@@ -14,24 +14,19 @@ import java.security.spec.PKCS8EncodedKeySpec;
 import java.security.spec.X509EncodedKeySpec;
 
 /**
- * <b>Criptograf�a Asim�trica (Clave p�blica) - Generador Claves</b> <br/>
- * <br/>
+ * Criptografia Asimetrica (Clave publica) - Generador Claves
  *
- * En un <b>Cifrado asim�trico</b> hay dos participantes: el emisor y el
- * receptor. Los pasos a seguir son:
+ * En un Cifrado asimetrico hay dos participantes: el emisor y el receptor. Los
+ * pasos a seguir son:
  *
- * <ul>
- * <li>Generar una <b>clave p�blica</b> y otra <b>privada</b>. La clave p�blica
- * se env�a al emisor</li>
- * <li>El emisor <u>cifra</u> los datos con <b>clave p�blica</b> y se env�an al
- * receptor</li>
- * <li>El receptor <u>descifra</u> los datos con <b>clave privada</b></li>
- * </ul>
+ * -Generar una clave publica y otra privada. La clave publica se envia al
+ * emisor -El emisor cifra los datos con clave publica y se envian al receptor
+ * -El receptor descifra los datos con clave privada
  *
- * En este caso, el algoritmo utilizado es el <b>RSA</b>. Para guardar una clave
- * en un archivo, se debe crear un <u>objeto de especificaci�n de clave</u>. La
- * clase para crear la especificaci�n de clave privada es
- * <u>PKCS8EncodedKeySpec</u>, y para la p�blica es <u>X509EncodedKeySpec</u>.
+ * En este caso, el algoritmo utilizado es el RSA. Para guardar una clave en un
+ * archivo, se debe crear un objeto de especificacion de clave. La clase para
+ * crear la especificacion de clave privada es PKCS8EncodedKeySpec, y para la
+ * publica es X509EncodedKeySpec.
  */
 public class KeyGenerator {
 

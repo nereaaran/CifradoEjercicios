@@ -37,7 +37,7 @@ public class AlgoritmoDeResumen {
         MessageDigest md;
         try {
             // Obtiene una instancia de MessageDigest que usa SHA
-            md = MessageDigest.getInstance("SHA");
+            md = MessageDigest.getInstance("SHA-512");
             // Convierte el texto en un array de bytes 
             byte dataBytes[] = mensaje.getBytes();
             // Actualiza el MessageDigest con el array de bytes

@@ -19,28 +19,23 @@ import javax.crypto.spec.PBEKeySpec;
 import javax.crypto.spec.SecretKeySpec;
 
 /**
- * <b>Criptografía Simétrica (Clave Secreta)</b> <br/>
- * <br/>
+ * Criptografía Simétrica (Clave Secreta)
  *
- * Esta clase permite cifrar un texto mediante una <b>clave secreta</b> y lo
- * guarda en un fichero. La única forma de descifrar el texto es mediante dicha
- * clave, que tanto el <u>emisor</u> como el <u>receptor</u> la deben conocer.
+ * Esta clase permite cifrar un texto mediante una clave secreta y lo guarda en
+ * un fichero. La única forma de descifrar el texto es mediante dicha clave, que
+ * tanto el emisor como el <u>receptor</u> la deben conocer.
  *
- * En este caso vamos a utilizar:
- * <ul>
- * <li>El algoritmo AES</li>
- * <li>El modo CBC: Existen dos, el ECB que es sencillo, y el CBC que necesita
- * un vector de inicialización(IV)</li>
- * <li>El padding PKCS5Padding (128): Si el mensaje no es múltiplo de la
- * longitud del algoritmo se necesita un relleno.</li>
- * </ul>
- * AES solo admite <b>tamaños de clave</b> de 16, 24 o 32 bytes. Se debe
- * proporcionar exactamente ese tamaño de clave o usar una
- * <b>"salt"(Semilla)</b>. En criptografía, un salt es un dato aleatorio que se
- * usa como una entrada adicional de cifrado. En este caso, vamos a utilizar
- * salt para crear una clave de exactamente 16 bytes. <br/>
- * <br/>
- * Generalmente un salt se genera aleatoriamente cuando creas la clave, así que
+ * En este caso vamos a utilizar: -El algoritmo AES -El modo CBC: Existen dos,
+ * el ECB que es sencillo, y el CBC que necesita un vector de inicialización(IV)
+ * -El padding PKCS5Padding (128): Si el mensaje no es múltiplo de la longitud
+ * del algoritmo se necesita un relleno.
+ *
+ * AES solo admite tamaños de clavede 16, 24 o 32 bytes. Se debe proporcionar
+ * exactamente ese tamaño de clave o usar una "salt"(Semilla). En criptografía,
+ * un salt es un dato aleatorio que se usa como una entrada adicional de
+ * cifrado. En este caso, vamos a utilizar salt para crear una clave de
+ * exactamente 16 bytes. Generalmente un salt se genera aleatoriamente cuando
+ * creas la clave, así que
  * <u>necesitas guardar</u> la clave y su salt para poder cifrar y descifrar.
  */
 public class ClavePrivada {
